@@ -8,11 +8,13 @@ import { Transform } from '@antv/x6-plugin-transform'
 import { History } from '@antv/x6-plugin-history'
 import { Keyboard } from '@antv/x6-plugin-keyboard'
 import { Clipboard } from '@antv/x6-plugin-clipboard'
-import { Dnd } from "@antv/x6-plugin-dnd";
-import {MagicStick } from '@element-plus/icons-vue'
-let dnd;
-const dndContainerRef = ref()
+import { Dnd } from '@antv/x6-plugin-dnd'
+import { MagicStick } from '@element-plus/icons-vue'
+import RightClickMenu from '../../components/rightClickMenu/index.vue'
 
+let dnd
+const dndContainerRef = ref()
+const RightClickMenuComponent = ref();
 const data = {
   // // 节点
   // nodes: [
@@ -160,6 +162,14 @@ Graph.registerNode(
           },
           setText: setSeatKey
         }
+      },
+      {
+        name: 'button-remove',
+        args: {
+          x: '100%',
+          y: 0,
+          offset: { x: -10, y: 10 }
+        }
       }
     ]
   },
@@ -187,38 +197,35 @@ function addSeat(x: number, y: number, seatKey: string, name: string) {
   })
 }
 // todo 设置画布的宽高
-const setGraphWidthHeight = () =>{
+const setGraphWidthHeight = () => {
   let width = window.screen.width - 200
   let height = window.screen.height - 60
-  graph.value.resize(
-    {
-      height,
-      width
-    }
-  )
+  graph.value.resize({
+    height,
+    width
+  })
 }
 // 复制选择的节点
-const copyNode = ()=>{
-    const cells = graph.value.getSelectedCells()
-    if (cells.length) {
-      graph.value.copy(cells)
-    }
-    return false
-  
+const copyNode = () => {
+  const cells = graph.value.getSelectedCells()
+  if (cells.length) {
+    graph.value.copy(cells)
+  }
+  return false
 }
 // 粘贴
 const pastNode = () => {
   if (!graph.value.isClipboardEmpty()) {
-      const cells = graph.value.paste({ offset: 32 })
-      graph.value.cleanSelection()
-      graph.value.select(cells)
-    }
-    return false
+    const cells = graph.value.paste({ offset: 32 })
+    graph.value.cleanSelection()
+    graph.value.select(cells)
+  }
+  return false
 }
 onMounted(() => {
   graph.value = new Graph({
     container: graphContainer.value,
-    autoResize: true,//可以通过设置 width 和 height 固定画布大小，如果不设置，就会以画布容器大小初始化画布。手动调用resize方法比较好
+    autoResize: true, //可以通过设置 width 和 height 固定画布大小，如果不设置，就会以画布容器大小初始化画布。手动调用resize方法比较好
     panning: {
       enabled: true,
       modifiers: 'alt' // modifiers 参数，设置修饰键后需要按下修饰键并点击鼠标才能触发画布拖拽。
@@ -227,23 +234,23 @@ onMounted(() => {
     // width: 800,
     // height: 600,
     // snapline: true,
-    background: {
-      color: '#F2F7FA'
-    },
+    // background: {
+    //   color: '#F2F7FA'
+    // },
     grid: {
       visible: true,
-      type: 'doubleMesh',
-      args: [
-        {
-          color: '#eee', // 主网格线颜色
-          thickness: 1 // 主网格线宽度
-        },
-        {
-          color: '#ddd', // 次网格线颜色
-          thickness: 1, // 次网格线宽度
-          factor: 4 // 主次网格线间隔
-        }
-      ]
+      // type: 'doubleMesh',
+      // args: [
+      //   {
+      //     color: '#eee', // 主网格线颜色
+      //     thickness: 1 // 主网格线宽度
+      //   },
+      //   {
+      //     color: '#ddd', // 次网格线颜色
+      //     thickness: 1, // 次网格线宽度
+      //     factor: 4 // 主次网格线间隔
+      //   }
+      // ]
     }
   })
   // graph.value.fromJSON(data)
@@ -298,17 +305,18 @@ onMounted(() => {
     })
   )
 
-  graph.value.bindKey('ctrl+c',copyNode)
+  graph.value.bindKey('ctrl+c', copyNode)
 
   graph.value.bindKey('ctrl+v', pastNode)
   // addSeat(0, 0, 'A1', '向书晗')
   setGraphWidthHeight()
 
   dnd = new Dnd({
-  target: graph.value,
-  scaled: false,
-  dndContainer: dndContainerRef.value,
-});
+    target: graph.value,
+    scaled: false,
+    dndContainer: dndContainerRef.value
+  })
+  RightClickMenuComponent.value = RightClickMenu;
 })
 const zoomOut = () => {
   graph.value.zoom(-0.1)
@@ -345,74 +353,68 @@ const handleAddBlankSeat = () => {
 }
 
 const startDrag = (event: any) => {
+  const target = event.target
+  const type = target.attributes['data-type'].value
 
-    const target = event.target
-    const type = target.attributes['data-type'].value
-  
-    const seatKey = 'A1'
-    const name = "test"
-    const node =
-      type === 'seat'
-        ? graph.value.createNode({
-    // x,
-    // y,
-    shape: 'seat-node',
-    attrs: {
-      seatKey: {
-        text: seatKey,
-        wordSpacing: '-5px',
-        letterSpacing: 0
-      },
-      name: {
-        text: name,
-        fontSize: 16,
-        // fontFamily: 'Arial',
-        letterSpacing: 0
-      }
-    }
-  })
-        : graph.value.createNode({
-            width: 60,
-            height: 60,
-            shape: 'circle',
-            label: 'Circle',
-            attrs: {
-              body: {
-                stroke: '#8f8f8f',
-                strokeWidth: 1,
-                fill: '#fff',
-              },
+  const seatKey = 'A1'
+  const name = 'test'
+  const node =
+    type === 'seat'
+      ? graph.value.createNode({
+          // x,
+          // y,
+          shape: 'seat-node',
+          attrs: {
+            seatKey: {
+              text: seatKey,
+              wordSpacing: '-5px',
+              letterSpacing: 0
             },
-          })
+            name: {
+              text: name,
+              fontSize: 16,
+              // fontFamily: 'Arial',
+              letterSpacing: 0
+            }
+          }
+        })
+      : graph.value.createNode({
+          width: 60,
+          height: 60,
+          shape: 'circle',
+          label: 'Circle',
+          attrs: {
+            body: {
+              stroke: '#8f8f8f',
+              strokeWidth: 1,
+              fill: '#fff'
+            }
+          }
+        })
 
-    dnd.start(node, event as any)
-  }
-
-
+  dnd.start(node, event as any)
+}
 </script>
 
 <template>
-   <el-container class="layout-container-demo">
+  <el-container class="layout-container-demo">
     <el-aside width="200px">
       <el-scrollbar>
+        <el-button class="arrange_seat_btn_area" type="primary" :icon="MagicStick"
+          >编排座位</el-button
+        >
 
-          <el-button class="arrange_seat_btn_area" type="primary" :icon="MagicStick">编排座位</el-button>
-        
-        <el-menu :default-openeds="['1', '3']">
+        <el-menu :default-openeds="['1']">
           <el-sub-menu index="1">
             <template #title>
               <el-icon><Files /></el-icon>组件库
             </template>
             <div class="dnd_wrap" ref="dndContainerRef">
               <div class="dnd_item">
-                <div
-                  data-type="seat"
-                  className="dnd_seat"
-                  @mousedown="startDrag"
-                >
-                <p data-type="seat">座位号</p>
-                <p data-type="seat">姓名</p>
-          </div>
+                <div data-type="seat" className="dnd_seat" @mousedown="startDrag">
+                  <p data-type="seat">座位号</p>
+                  <p data-type="seat">姓名</p>
+                </div>
               </div>
             </div>
           </el-sub-menu>
@@ -460,22 +462,18 @@ const startDrag = (event: any) => {
           <el-dropdown>
             <span class="el-dropdown-link">
               <el-icon class="el-icon--left" style="margin-right: 8px; margin-top: 1px"
-              ><Operation /></el-icon>
+                ><Operation
+              /></el-icon>
               <span>菜单</span>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item>View</el-dropdown-item>
-                <el-dropdown-item @click="download">
-                  下载
-                </el-dropdown-item>
-                <el-dropdown-item @click="handleAddBlankSeat">
-                  添加座位
-                </el-dropdown-item>
+                <el-dropdown-item @click="download"> 下载 </el-dropdown-item>
+                <el-dropdown-item @click="handleAddBlankSeat"> 添加座位 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-          
         </div>
       </el-header>
 
@@ -484,6 +482,8 @@ const startDrag = (event: any) => {
       </el-main>
     </el-container>
   </el-container>
+  <component :is="RightClickMenuComponent" v-if="RightClickMenuComponent" :graph="graph" />
+  <!-- <RightClickMenu :graph="graph.value"/> -->
 </template>
 
 <style lang="scss" scoped>
@@ -512,15 +512,15 @@ const startDrag = (event: any) => {
   height: 100%;
 }
 
-.layout-container-demo{
+.layout-container-demo {
   height: 100vh;
   width: 100vw;
 }
-.container{
+.container {
   border-top: 1px solid var(--el-color-info-light-5);
   border-left: 1px solid var(--el-color-info-light-5);
 }
-.arrange_seat_btn_area{
+.arrange_seat_btn_area {
   display: flex;
   box-sizing: border-box;
   height: var(--el-header-height);
@@ -528,7 +528,7 @@ const startDrag = (event: any) => {
   align-items: center;
   border-radius: 0px;
 }
-.dnd_wrap{
+.dnd_wrap {
   box-sizing: border-box;
   min-height: 30vh;
   width: 100%;
@@ -538,27 +538,27 @@ const startDrag = (event: any) => {
   justify-content: center;
   background-color: var(--el-color-info-light-9);
 }
-.dnd_item{
+.dnd_item {
   display: flex;
   position: relative;
   background-color: white;
 }
-.dnd_seat{
+.dnd_seat {
   display: flex;
-  color: #5F95FF;
+  color: #5f95ff;
   justify-content: center;
   align-items: center;
   font-size: 16px;
   width: 100px;
   height: 40px;
   border-radius: 8px;
-  border: 1px solid #5F95FF;
+  border: 1px solid #5f95ff;
   position: relative;
 }
-.dnd_seat :first-child{
+.dnd_seat :first-child {
   font-size: 10px;
   position: absolute;
-  top:-20px;
+  top: -20px;
   left: 0px;
 }
 .el-dropdown-link {
