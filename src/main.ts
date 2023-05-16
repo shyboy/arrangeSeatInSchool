@@ -8,7 +8,7 @@ import * as Elicons from '@element-plus/icons-vue';
 import 'element-plus/theme-chalk/el-loading.css';
 import 'element-plus/theme-chalk/el-message.css';
 // import QrReader from 'vue3-qr-reader';
-// import './assets/main.css'
+import './assets/base.css'
 
 const app = createApp(App)
 
