@@ -26,6 +26,7 @@ declare module '@vue/runtime-core' {
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
+    ElSubmenu: typeof import('element-plus/es')['ElSubmenu']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElText: typeof import('element-plus/es')['ElText']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
@@ -40,6 +41,8 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
+    Tmp: typeof import('./src/components/rightClickMenu/tmp.vue')['default']
+    Tmp2: typeof import('./src/components/rightClickMenu/tmp2.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
 }

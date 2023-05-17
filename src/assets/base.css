@@ -77,3 +77,10 @@ body {
 #app{
   min-height: 100vh;
 }
+
+.v3-menus{
+  box-shadow: 3px 3px 10px 6px rgba(121, 187, 255, 0.1);
+}
+/* .v3-menus-active{
+  background-color: var(#ecf5ff);
+} */

@@ -6,13 +6,14 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import ElementPlus from 'unplugin-element-plus/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server:{
     host: '0.0.0.0',
  }, 
-  plugins: [vue(), vueJsx(),AutoImport({
+  plugins: [vue(), vueJsx(),ElementPlus(),AutoImport({
     resolvers: [ElementPlusResolver()],
   }),
   Components({

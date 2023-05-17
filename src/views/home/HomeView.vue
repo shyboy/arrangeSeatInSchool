@@ -163,14 +163,14 @@ Graph.registerNode(
           setText: setSeatKey
         }
       },
-      {
-        name: 'button-remove',
-        args: {
-          x: '100%',
-          y: 0,
-          offset: { x: -10, y: 10 }
-        }
-      }
+      // {
+      //   name: 'button-remove',
+      //   args: {
+      //     x: '100%',
+      //     y: 0,
+      //     offset: { x: -10, y: 10 }
+      //   }
+      // }
     ]
   },
   true
@@ -308,6 +308,14 @@ onMounted(() => {
   graph.value.bindKey('ctrl+c', copyNode)
 
   graph.value.bindKey('ctrl+v', pastNode)
+
+  graph.value.bindKey('backspace', () => {
+  const cells = graph.value.getSelectedCells()
+  if (cells.length) {
+    graph.value.removeCells(cells)
+  }
+})
+
   // addSeat(0, 0, 'A1', '向书晗')
   setGraphWidthHeight()
 
