@@ -3,13 +3,19 @@ import { defineStore } from 'pinia'
 
 interface StudentState {
   studentsExcel:Array<Array<string|number>>,
-  canUploadExcel: boolean
 }
 export const useStudentStore = defineStore('student',  {
   state:():StudentState=>({
     studentsExcel:[],
-    canUploadExcel: false
   }),
+  getters: {
+    canArrange: (state) => {
+      if(state.studentsExcel.length < 2){
+        return false
+      }
+      return true
+    },
+  },
   actions: {
      hasPreSeatStus(): Array<Array<string|number>> {
       // 返回有预排座位的学生

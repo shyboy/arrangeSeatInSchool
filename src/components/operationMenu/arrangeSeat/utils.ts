@@ -16,7 +16,7 @@ export const includeSeat = (seat:Node, seats: Array<Node>):boolean=>{
     return false
 }
 
-// 
+// 编排座位的核心代码
 export const arrangeSeat = (graph:Graph) => {
     const studentStore = useStudentStore()
     const allNodes:Array<Node> = graph.getNodes()

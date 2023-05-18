@@ -16,13 +16,13 @@
     >
   </el-upload>
   <el-button
-    v-if="canRead"
+    v-if="studentStore.canArrange"
     style="width: 100%"
     size="small"
     type="success"
     slot="trigger"
     @click="submitUpload"
-    >读取并排座</el-button
+    >编排座位</el-button
   >
 </template>
 
@@ -49,7 +49,6 @@ export default defineComponent({
     const handleFileUpload = (file: File) => {
       fileList.value = [file]
       canRead.value = true
-      studentStore.canUploadExcel = true
 
       readXlsx(file.raw)
     }
@@ -91,7 +90,7 @@ export default defineComponent({
 
     const removeFile = () => {
         canRead.value = false
-        studentStore.canUploadExcel = false
+        studentStore.studentsExcel = []
     }
     return {
       fileList,
@@ -99,7 +98,8 @@ export default defineComponent({
       canRead,
       submitUpload,
       props,
-      removeFile
+      removeFile,
+      studentStore
     }
   }
 })

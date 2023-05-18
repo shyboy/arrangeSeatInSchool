@@ -13,6 +13,8 @@ import { MagicStick } from '@element-plus/icons-vue'
 import RightClickMenu from '../../components/rightClickMenu/index.vue'
 import OperationMenu from '../../components/operationMenu/index.vue'
 import { useStudentStore } from '@/stores/students'
+import { arrangeSeat } from '@/components/operationMenu/arrangeSeat/utils'
+import { ElMessage } from 'element-plus'
 
 let dnd
 const dndContainerRef = ref()
@@ -422,9 +424,14 @@ const startDrag = (event: any) => {
 
 
 const handleArrangeSeat = ()=>{
-  if(!studentStore.canUploadExcel){
-    
+  if(!studentStore.canArrange){
+    ElMessage({
+    message: '请先在“操作”中上传名单excel',
+    type: 'warning',
+  })
+    return
   }
+  arrangeSeat(graph.value)
 }
 </script>
 
