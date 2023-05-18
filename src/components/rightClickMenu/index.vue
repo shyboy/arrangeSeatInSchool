@@ -198,13 +198,38 @@ const menus = shallowRef([
   },
   {
     label: '删除',
-    tip: '暂无法撤销',
+    tip: '可撤销',
     style:{
       color:'#F56C6C'
     },
     click: () => {
       deleteNodes(props.graph, selectedElements.value)
     }
+  },
+  {
+    label: '历史',
+    // tip: 'Alt+向左箭头',
+    // click: () => {
+    //   window.history.back();
+    // }
+    children: [
+      {
+        label: '撤销',
+        tip: 'Ctrl+Z',
+        click: () => {
+          props.graph.undo()
+        },
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.9998 8L6 14L12.9998 21" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M6 14H28.9938C35.8768 14 41.7221 19.6204 41.9904 26.5C42.2739 33.7696 36.2671 40 28.9938 40H11.9984" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
+      },
+      {
+        label: '重做',
+        tip: 'Ctrl+Shift+Z',
+        click: () => {
+           props.graph.redo()
+        },
+        icon:'<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M36.7279 36.7279C33.4706 39.9853 28.9706 42 24 42C14.0589 42 6 33.9411 6 24C6 14.0589 14.0589 6 24 6C28.9706 6 33.4706 8.01472 36.7279 11.2721C38.3859 12.9301 42 17 42 17" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M42 8V17H33" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
+      }
+    ]
   },
 ])
 </script>

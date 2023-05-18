@@ -15,7 +15,7 @@ import OperationMenu from '../../components/operationMenu/index.vue'
 
 let dnd
 const dndContainerRef = ref()
-const RightClickMenuComponent = ref();
+const RightClickMenuComponent = ref()
 const data = {
   // // 节点
   // nodes: [
@@ -163,7 +163,7 @@ Graph.registerNode(
           },
           setText: setSeatKey
         }
-      },
+      }
       // {
       //   name: 'button-remove',
       //   args: {
@@ -239,7 +239,7 @@ onMounted(() => {
     //   color: '#F2F7FA'
     // },
     grid: {
-      visible: true,
+      visible: true
       // type: 'doubleMesh',
       // args: [
       //   {
@@ -285,9 +285,9 @@ onMounted(() => {
       resizing: {
         enabled: true,
         minWidth: 1,
-        maxWidth: 200,
+        // maxWidth: 200,
         minHeight: 1,
-        maxHeight: 150,
+        // maxHeight: 150,
         orthogonal: false,
         restrict: false,
         preserveAspectRatio: false
@@ -310,12 +310,19 @@ onMounted(() => {
 
   graph.value.bindKey('ctrl+v', pastNode)
 
+  graph.value.bindKey('ctrl+z', ()=>{
+    graph.value.undo()
+  })
+  graph.value.bindKey('ctrl+shift+z', ()=>{
+    graph.value.redo()
+  })
+
   graph.value.bindKey('backspace', () => {
-  const cells = graph.value.getSelectedCells()
-  if (cells.length) {
-    graph.value.removeCells(cells)
-  }
-})
+    const cells = graph.value.getSelectedCells()
+    if (cells.length) {
+      graph.value.removeCells(cells)
+    }
+  })
 
   // addSeat(0, 0, 'A1', '向书晗')
   setGraphWidthHeight()
@@ -325,7 +332,7 @@ onMounted(() => {
     scaled: false,
     dndContainer: dndContainerRef.value
   })
-  RightClickMenuComponent.value = RightClickMenu;
+  RightClickMenuComponent.value = RightClickMenu
 })
 const zoomOut = () => {
   graph.value.zoom(-0.1)
@@ -367,39 +374,46 @@ const startDrag = (event: any) => {
 
   const seatKey = 'A1'
   const name = 'test'
-  const node =
-    type === 'seat'
-      ? graph.value.createNode({
-          // x,
-          // y,
-          shape: 'seat-node',
-          attrs: {
-            seatKey: {
-              text: seatKey,
-              wordSpacing: '-5px',
-              letterSpacing: 0
-            },
-            name: {
-              text: name,
-              fontSize: 16,
-              // fontFamily: 'Arial',
-              letterSpacing: 0
-            }
-          }
-        })
-      : graph.value.createNode({
-          width: 60,
-          height: 60,
-          shape: 'circle',
-          label: 'Circle',
-          attrs: {
-            body: {
-              stroke: '#8f8f8f',
-              strokeWidth: 1,
-              fill: '#fff'
-            }
-          }
-        })
+  let node;
+  if (type === 'seat') {
+    node = graph.value.createNode({
+      // x,
+      // y,
+      shape: 'seat-node',
+      attrs: {
+        seatKey: {
+          text: seatKey,
+          wordSpacing: '-5px',
+          letterSpacing: 0
+        },
+        name: {
+          text: name,
+          fontSize: 16,
+          // fontFamily: 'Arial',
+          letterSpacing: 0
+        }
+      }
+    })
+  } else {
+    node = graph.value.createNode({
+      width: 100,
+      height: 40,
+      shape: 'rect',
+      label: '讲台/门',
+      attrs: {
+        body: {
+          stroke: '#8f8f8f',
+          strokeWidth: 1,
+          fill: '#fff'
+        }
+      },
+      tools: [
+        {
+          name: 'node-editor'
+        }
+      ]
+    })
+  }
 
   dnd.start(node, event as any)
 }
@@ -413,7 +427,7 @@ const startDrag = (event: any) => {
           >编排座位</el-button
         >
 
-        <el-menu :default-openeds="['1']">
+        <el-menu :default-openeds="['1','3']">
           <el-sub-menu index="1">
             <template #title>
               <el-icon><Files /></el-icon>组件库
@@ -424,6 +438,9 @@ const startDrag = (event: any) => {
                   <p data-type="seat">座位号</p>
                   <p data-type="seat">姓名</p>
                 </div>
+              </div>
+              <div className="dnd_item">
+                <div class="dnd-rect" @mousedown="startDrag" data-type="rect">讲台/门</div>
               </div>
             </div>
           </el-sub-menu>
@@ -448,7 +465,7 @@ const startDrag = (event: any) => {
             <template #title>
               <el-icon><setting /></el-icon>操作
             </template>
-            <OperationMenu></OperationMenu>
+            <OperationMenu :graph="graph"></OperationMenu>
           </el-sub-menu>
         </el-menu>
       </el-scrollbar>
@@ -540,6 +557,7 @@ const startDrag = (event: any) => {
   display: flex;
   position: relative;
   background-color: white;
+  margin-bottom: 16px;
 }
 .dnd_seat {
   display: flex;
@@ -552,6 +570,7 @@ const startDrag = (event: any) => {
   border-radius: 8px;
   border: 1px solid #5f95ff;
   position: relative;
+  cursor: move;
 }
 .dnd_seat :first-child {
   font-size: 10px;
@@ -567,5 +586,15 @@ const startDrag = (event: any) => {
   height: 60px;
   padding: 0 20px;
   // background-color:var(--el-color-primary);
+}
+.dnd-rect {
+  width: 100px;
+  height: 40px;
+  // margin: 16px;
+  line-height: 40px;
+  text-align: center;
+  border: 1px solid #8f8f8f;
+  // border-radius: 6px;
+  cursor: move;
 }
 </style>
