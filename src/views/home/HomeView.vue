@@ -12,10 +12,12 @@ import { Dnd } from '@antv/x6-plugin-dnd'
 import { MagicStick } from '@element-plus/icons-vue'
 import RightClickMenu from '../../components/rightClickMenu/index.vue'
 import OperationMenu from '../../components/operationMenu/index.vue'
+import { useStudentStore } from '@/stores/students'
 
 let dnd
 const dndContainerRef = ref()
 const RightClickMenuComponent = ref()
+const studentStore = useStudentStore()
 const data = {
   // // 节点
   // nodes: [
@@ -417,13 +419,20 @@ const startDrag = (event: any) => {
 
   dnd.start(node, event as any)
 }
+
+
+const handleArrangeSeat = ()=>{
+  if(!studentStore.canUploadExcel){
+    
+  }
+}
 </script>
 
 <template>
   <el-container class="layout-container-demo">
     <el-aside width="200px">
       <el-scrollbar>
-        <el-button class="arrange_seat_btn_area" type="primary" :icon="MagicStick"
+        <el-button class="arrange_seat_btn_area" @click="handleArrangeSeat" type="primary" :icon="MagicStick"
           >编排座位</el-button
         >
 

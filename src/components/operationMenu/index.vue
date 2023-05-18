@@ -80,6 +80,7 @@
         ><el-button @click="handleBatchCreateSeats" type="primary" class="full_btn" size="small">创建</el-button></el-col
       >
     </el-row>
+    <arrange-seat-area :graph="graph"></arrange-seat-area>
   </div>
 </template>
 
@@ -87,6 +88,8 @@
 import { ref, reactive } from 'vue'
 import { generateSeats } from './batchCreate/utils';
 import type { Graph } from '@antv/x6';
+import ArrangeSeatArea from './arrangeSeat/index.vue'
+
 const batchCreateData = ref({
   lines: 0,
   rows: 0,

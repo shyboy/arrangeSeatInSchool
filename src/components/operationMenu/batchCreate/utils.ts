@@ -132,5 +132,5 @@ export const generateSeats = (
               })
         })
     });
-    
+    graph.centerContent() // 居中显示
 }
