@@ -9,7 +9,7 @@ import 'element-plus/theme-chalk/el-loading.css';
 import 'element-plus/theme-chalk/el-message.css';
 // import QrReader from 'vue3-qr-reader';
 import './assets/base.css'
-import Vue3Menus from 'https://esm.sh/vue3-menus@1.0.3'; // 也可以将1.0.3换成其他版本号
+
 const pinia = createPinia()
 const app = createApp(App)
 
