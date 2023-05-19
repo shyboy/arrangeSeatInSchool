@@ -15,6 +15,8 @@ import OperationMenu from '../../components/operationMenu/index.vue'
 import { useStudentStore } from '@/stores/students'
 import { arrangeSeat, exportList } from '@/components/operationMenu/arrangeSeat/utils'
 import { ElMessage } from 'element-plus'
+// import VueMarkdownEditor from '@kangc/v-md-editor';
+import markdownTxt from '@/assets/guide.md?raw'
 
 let dnd
 const dndContainerRef = ref()
@@ -423,8 +425,10 @@ const startDrag = (event: any) => {
 
   dnd.start(node, event as any)
 }
+const guideDialogVisible = ref(false)
 const handleShowGuide = () => {
   // 展示说明
+  guideDialogVisible.value = true
 }
 const handleDownloadModelExcel = () => {
   exportList()
@@ -558,6 +562,9 @@ const handleArrangeSeat = () => {
   </el-container>
   <component :is="RightClickMenuComponent" v-if="RightClickMenuComponent" :graph="graph" />
   <!-- <RightClickMenu :graph="graph.value"/> -->
+  <el-dialog v-model="guideDialogVisible" title="用户指南">
+    <v-md-preview :text="markdownTxt"></v-md-preview>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
