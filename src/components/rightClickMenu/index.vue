@@ -14,6 +14,7 @@ import { horizontalAlign, verticalAlign } from '@/utils/align'
 import { Vue3Menus, menusEvent } from 'vue3-menus'
 import { horizontalDistribute, verticalDistribute } from '@/utils/distribute'
 import { copyNodes, deleteNodes, pasteNodes } from '@/utils/nodesCopy'
+import { switch2Seats } from './utils'
 
 // const contextMenuOpen = ref(false)
 const selectedElements = ref<Array<Cell>>([])
@@ -175,37 +176,31 @@ const menus = shallowRef([
     ]
   },
   {
-    label: '复制',
-    tip: 'Ctrl+C',
-    click:() => {
-      copyNodes(props.graph, selectedElements.value)
-    },
+    label: '座位',
+    // tip: 'Alt+向左箭头',
+    // click: () => {
+    //   window.history.back();
+    // }
+    children: [
+      {
+        label: '两者交换',
+        click: () => {
+          switch2Seats(selectedElements.value)
+        },
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40 33L44 37L40 41" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M40 7L44 11L40 15" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M44 11H37C29.8203 11 24 16.8203 24 24C24 31.1797 29.8203 37 37 37H44" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M4 37H11C18.1797 37 24 31.1797 24 24C24 16.8203 18.1797 11 11 11H4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>'
+      },
+    ]
   },
-  {
-    label: '粘贴',
-    tip: 'Ctrl+V',
-    click:() => {
-      pasteNodes(props.graph)
-    },
-  },
-  {
-    label: '编组',
-    tip: 'Ctrl+G',
-  },
-  {
-    label: '解组',
-    tip: 'Ctrl+Shift+G',
-  },
-  {
-    label: '删除',
-    tip: '可撤销',
-    style:{
-      color:'#F56C6C'
-    },
-    click: () => {
-      deleteNodes(props.graph, selectedElements.value)
-    }
-  },
+  
+  // {
+  //   label: '编组',
+  //   tip: 'Ctrl+G',
+  // },
+  // {
+  //   label: '解组',
+  //   tip: 'Ctrl+Shift+G',
+  // },
+  
   {
     label: '历史',
     // tip: 'Alt+向左箭头',
@@ -230,6 +225,30 @@ const menus = shallowRef([
         icon:'<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M36.7279 36.7279C33.4706 39.9853 28.9706 42 24 42C14.0589 42 6 33.9411 6 24C6 14.0589 14.0589 6 24 6C28.9706 6 33.4706 8.01472 36.7279 11.2721C38.3859 12.9301 42 17 42 17" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M42 8V17H33" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
       }
     ]
+  },
+  {
+    label: '复制',
+    tip: 'Ctrl+C',
+    click:() => {
+      copyNodes(props.graph, selectedElements.value)
+    },
+  },
+  {
+    label: '粘贴',
+    tip: 'Ctrl+V',
+    click:() => {
+      pasteNodes(props.graph)
+    },
+  },
+  {
+    label: '删除',
+    tip: '可撤销',
+    style:{
+      color:'#F56C6C'
+    },
+    click: () => {
+      deleteNodes(props.graph, selectedElements.value)
+    }
   },
 ])
 </script>

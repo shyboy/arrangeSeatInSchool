@@ -1,4 +1,5 @@
 import { useStudentStore } from '@/stores/students'
+import { filterSeats } from '@/utils/others'
 import type { Graph, Node } from '@antv/x6'
 import {shuffle} from 'lodash'
 import * as XLSX from 'xlsx'
@@ -22,12 +23,7 @@ export const arrangeSeat = (graph:Graph) => {
     const allNodes:Array<Node> = graph.getNodes()
         console.log("allNodes",allNodes);
         
-    let seats = allNodes.filter((node)=>{
-        const attrs = node.getAttrs()
-        if (attrs?.seatKey) {
-            return node
-        }
-    })
+    let seats = filterSeats(allNodes)
 
     seats.forEach((seat)=>{
         seat.attr("name",{ text: '未安排'})
