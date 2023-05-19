@@ -1,6 +1,6 @@
 import { useStudentStore } from '@/stores/students'
 import { filterSeats } from '@/utils/others'
-import type { Graph, Node } from '@antv/x6'
+import type { Cell, Graph, Node } from '@antv/x6'
 import {shuffle} from 'lodash'
 import * as XLSX from 'xlsx'
 
@@ -72,6 +72,16 @@ export const arrangeSeat = (graph:Graph) => {
 
 }
 
+// 设置座位成不排座
+export const donotArrangeSeat = (cells: Array<Cell>) => {
+    const allSeats = filterSeats(cells)
+    if(allSeats.length === 0){
+        return false
+    }
+    const greyColor = "#000"
+    return true
+}
+
 export const readXlsx = (file: File, callBack=()=>{}) => {
     const reader = new FileReader()
     
@@ -95,3 +105,17 @@ export const readXlsx = (file: File, callBack=()=>{}) => {
 
       reader.readAsArrayBuffer(file)
 }
+
+/**
+ * 表格数据导出Excel实际方法
+ * @param list
+ */
+export const exportList = () => {
+    //表格表头,导出表头
+    let tableHeader = [['姓名', '预排座位', '性别', '视力', '成绩', "纪律情况", "不能同桌（用英文逗号分隔）"]]
+    let wb = XLSX.utils.book_new()
+    let ws = XLSX.utils.aoa_to_sheet(tableHeader)
+    XLSX.utils.book_append_sheet(wb, ws, '导入姓名模板') // 工作簿名称
+    XLSX.writeFile(wb, '导入姓名模板.xlsx') // 保存的文件名
+  }
+  

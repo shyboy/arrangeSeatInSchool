@@ -13,7 +13,7 @@ import { MagicStick } from '@element-plus/icons-vue'
 import RightClickMenu from '../../components/rightClickMenu/index.vue'
 import OperationMenu from '../../components/operationMenu/index.vue'
 import { useStudentStore } from '@/stores/students'
-import { arrangeSeat } from '@/components/operationMenu/arrangeSeat/utils'
+import { arrangeSeat, exportList } from '@/components/operationMenu/arrangeSeat/utils'
 import { ElMessage } from 'element-plus'
 
 let dnd
@@ -371,7 +371,9 @@ const download = () => {
 const handleAddBlankSeat = () => {
   addSeat(0, 0, 'A1', '向书晗')
 }
-
+const handleFitGraph = () => {
+  graph.value.zoomToFit({ maxScale: 1 })
+}
 const startDrag = (event: any) => {
   const target = event.target
   const type = target.attributes['data-type'].value
@@ -421,7 +423,12 @@ const startDrag = (event: any) => {
 
   dnd.start(node, event as any)
 }
-
+const handleShowGuide = () => {
+  // 展示说明
+}
+const handleDownloadModelExcel = () => {
+  exportList()
+}
 const handleArrangeSeat = () => {
   if (!studentStore.canArrange) {
     ElMessage({
@@ -481,8 +488,8 @@ const handleArrangeSeat = () => {
 
     <el-container>
       <el-header height="60px" style="text-align: right; font-size: 12px">
-        <div class="toolbar">
-          <el-dropdown>
+        <div class="toolbar_area">
+          <el-dropdown popper-class="toolbar">
             <span class="el-dropdown-link">
               <el-icon class="el-icon--left" style="margin-right: 8px; margin-top: 1px"
                 ><Service
@@ -491,23 +498,23 @@ const handleArrangeSeat = () => {
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item
-                  ><el-text>
+                <el-dropdown-item @click="handleDownloadModelExcel"
+                  ><el-text class="menu-item">
                     <el-icon><Download /></el-icon>
-                    下载模板
+                    下载excel模板
                   </el-text></el-dropdown-item
                 >
-                <el-dropdown-item @click="download"><el-text>
-                  <el-icon><Tickets /></el-icon>
+                <el-dropdown-item @click="handleShowGuide"
+                  ><el-text class="menu-item">
+                    <el-icon><Tickets /></el-icon>
                     使用说明
-                  </el-text></el-dropdown-item>
-                <el-dropdown-item @click="handleAddBlankSeat"> 添加座位 </el-dropdown-item>
+                  </el-text></el-dropdown-item
+                >
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-        </div>
-        <div class="toolbar">
-          <el-dropdown>
+
+          <el-dropdown popper-class="toolbar">
             <span class="el-dropdown-link">
               <el-icon class="el-icon--left" style="margin-right: 8px; margin-top: 1px"
                 ><Operation
@@ -516,9 +523,28 @@ const handleArrangeSeat = () => {
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item>画布居中</el-dropdown-item>
-                <el-dropdown-item @click="download"> 下载 </el-dropdown-item>
-                <el-dropdown-item @click="handleAddBlankSeat"> 添加座位 </el-dropdown-item>
+                <el-dropdown-item @click="download"
+                  ><el-text>
+                    <el-icon><Download /></el-icon>
+                    保存座位
+                  </el-text></el-dropdown-item
+                >
+                <el-dropdown-item @click="download"><el-text>
+                  <el-icon><Upload /></el-icon>
+                    导入座位
+                  </el-text></el-dropdown-item>
+                <el-dropdown-item @click="download"><el-text>
+                  <el-icon><Picture /></el-icon>
+                    保存图片
+                  </el-text></el-dropdown-item>
+                <el-dropdown-item @click="handleAddBlankSeat"><el-text>
+                  <el-icon><Plus /></el-icon>
+                    添加座位
+                  </el-text></el-dropdown-item>
+                <el-dropdown-item @click="handleFitGraph"><el-text>
+                  <el-icon><Location /></el-icon>
+                    画布居中
+                  </el-text></el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -629,5 +655,8 @@ const handleArrangeSeat = () => {
   border: 1px solid #8f8f8f;
   // border-radius: 6px;
   cursor: move;
+}
+:global(.toolbar .el-dropdown-menu__item .el-text:hover) {
+  color: var(--el-dropdown-menuItem-hover-color);
 }
 </style>

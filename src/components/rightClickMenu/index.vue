@@ -13,8 +13,17 @@ import { Graph, Cell } from '@antv/x6'
 import { horizontalAlign, verticalAlign } from '@/utils/align'
 import { Vue3Menus, menusEvent } from 'vue3-menus'
 import { horizontalDistribute, verticalDistribute } from '@/utils/distribute'
-import { copyNodes, deleteNodes, pasteNodes, nodes2Bottom, nodes2Top, moveDownNodes, moveUpNodes } from '@/utils/nodeOperation'
+import {
+  copyNodes,
+  deleteNodes,
+  pasteNodes,
+  nodes2Bottom,
+  nodes2Top,
+  moveDownNodes,
+  moveUpNodes
+} from '@/utils/nodeOperation'
 import { switch2Seats } from './utils'
+import { ElMessage } from 'element-plus'
 
 // const contextMenuOpen = ref(false)
 const selectedElements = ref<Array<Cell>>([])
@@ -37,8 +46,6 @@ const handleAlign = (option: string) => {
 // function rightClick(event) {
 
 //     }
-
-
 
 const props = defineProps<{
   graph: Graph
@@ -96,22 +103,21 @@ const menus = shallowRef([
         click: () => {
           handleAlign('right')
         },
-        icon:'<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="7" width="24" height="6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><rect x="8" y="21" width="32" height="6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><rect x="22" y="35" width="18" height="6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="7" width="24" height="6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><rect x="8" y="21" width="32" height="6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><rect x="22" y="35" width="18" height="6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
       },
       {
         label: '顶对齐',
         click: () => {
           handleAlign('top')
         },
-        icon:'<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="8" width="6" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><rect x="21" y="8" width="6" height="32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><rect x="35" y="8" width="6" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="8" width="6" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><rect x="21" y="8" width="6" height="32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><rect x="35" y="8" width="6" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
       },
       {
         label: '底对齐',
-        click: ():void => {
+        click: (): void => {
           handleAlign('bottom')
         },
-        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="16" width="6" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><rect x="21" y="8" width="6" height="32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><rect x="35" y="22" width="6" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>',
-        
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="16" width="6" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><rect x="21" y="8" width="6" height="32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><rect x="35" y="22" width="6" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
       }
     ]
   },
@@ -132,10 +138,10 @@ const menus = shallowRef([
       {
         label: '水平分布',
         click: () => {
-           horizontalDistribute(selectedElements.value)
+          horizontalDistribute(selectedElements.value)
         },
-        icon:'<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="10" width="28" height="12" transform="rotate(90 30 10)" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/><path d="M40 6V42" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M8 6V42" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
-      },
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="10" width="28" height="12" transform="rotate(90 30 10)" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/><path d="M40 6V42" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M8 6V42" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
+      }
     ]
   },
   {
@@ -157,21 +163,21 @@ const menus = shallowRef([
         click: () => {
           moveUpNodes(selectedElements.value)
         },
-        icon:'<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="34" width="36" height="8" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/><rect x="6" y="20" width="36" height="8" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/><path d="M30 12L24 6L18 12V12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M24 28V34" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M24 6V20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="34" width="36" height="8" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/><rect x="6" y="20" width="36" height="8" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/><path d="M30 12L24 6L18 12V12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M24 28V34" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M24 6V20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
       },
       {
         label: '下移一层',
         click: () => {
           moveDownNodes(selectedElements.value)
         },
-        icon:'<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="8" transform="matrix(1 0 0 -1 6 14)" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/><rect width="36" height="8" transform="matrix(1 0 0 -1 6 28)" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/><path d="M30 36L24 42L18 36V36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M24 42V28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M24 14V20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="8" transform="matrix(1 0 0 -1 6 14)" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/><rect width="36" height="8" transform="matrix(1 0 0 -1 6 28)" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/><path d="M30 36L24 42L18 36V36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M24 42V28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M24 14V20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
       },
       {
         label: '移到底层',
         click: () => {
           nodes2Bottom(selectedElements.value)
         },
-        icon:'<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M30 18H41C41.5523 18 42 18.4477 42 19V41C42 41.5523 41.5523 42 41 42H19C18.4477 42 18 41.5523 18 41V30" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M9.96906 6H6V10.0336" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M9.99705 30H6V26.012" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M26 30H29.9971V26.012" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M26.0023 6H30V9.99785" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M16.0283 6H20.0083" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M6 16V20.0148" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M30 16V20.0148" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M15.9922 30H19.9996" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M30 18H41C41.5523 18 42 18.4477 42 19V41C42 41.5523 41.5523 42 41 42H19C18.4477 42 18 41.5523 18 41V30" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M9.96906 6H6V10.0336" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M9.99705 30H6V26.012" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M26 30H29.9971V26.012" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M26.0023 6H30V9.99785" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M16.0283 6H20.0083" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M6 16V20.0148" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M30 16V20.0148" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M15.9922 30H19.9996" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
       }
     ]
   },
@@ -185,13 +191,25 @@ const menus = shallowRef([
       {
         label: '两者交换',
         click: () => {
-          switch2Seats(selectedElements.value)
+          if (!switch2Seats(selectedElements.value)) {
+            ElMessage({
+              message: '请选择两个座位',
+              type: 'warning'
+            })
+          }
         },
         icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40 33L44 37L40 41" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M40 7L44 11L40 15" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M44 11H37C29.8203 11 24 16.8203 24 24C24 31.1797 29.8203 37 37 37H44" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M4 37H11C18.1797 37 24 31.1797 24 24C24 16.8203 18.1797 11 11 11H4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>'
       },
+      {
+        label: '不排座',
+        click: () => {
+          switch2Seats(selectedElements.value)
+        },
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M15 15L33 33" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
+      }
     ]
   },
-  
+
   // {
   //   label: '编组',
   //   tip: 'Ctrl+G',
@@ -200,7 +218,7 @@ const menus = shallowRef([
   //   label: '解组',
   //   tip: 'Ctrl+Shift+G',
   // },
-  
+
   {
     label: '历史',
     // tip: 'Alt+向左箭头',
@@ -220,36 +238,36 @@ const menus = shallowRef([
         label: '重做',
         tip: 'Ctrl+Shift+Z',
         click: () => {
-           props.graph.redo()
+          props.graph.redo()
         },
-        icon:'<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M36.7279 36.7279C33.4706 39.9853 28.9706 42 24 42C14.0589 42 6 33.9411 6 24C6 14.0589 14.0589 6 24 6C28.9706 6 33.4706 8.01472 36.7279 11.2721C38.3859 12.9301 42 17 42 17" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M42 8V17H33" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M36.7279 36.7279C33.4706 39.9853 28.9706 42 24 42C14.0589 42 6 33.9411 6 24C6 14.0589 14.0589 6 24 6C28.9706 6 33.4706 8.01472 36.7279 11.2721C38.3859 12.9301 42 17 42 17" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M42 8V17H33" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
       }
     ]
   },
   {
     label: '复制',
     tip: 'Ctrl+C',
-    click:() => {
+    click: () => {
       copyNodes(props.graph, selectedElements.value)
-    },
+    }
   },
   {
     label: '粘贴',
     tip: 'Ctrl+V',
-    click:() => {
+    click: () => {
       pasteNodes(props.graph)
-    },
+    }
   },
   {
     label: '删除',
     tip: '可撤销',
-    style:{
-      color:'#F56C6C'
+    style: {
+      color: '#F56C6C'
     },
     click: () => {
       deleteNodes(props.graph, selectedElements.value)
     }
-  },
+  }
 ])
 </script>
 
