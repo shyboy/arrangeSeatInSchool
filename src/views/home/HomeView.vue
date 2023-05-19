@@ -314,10 +314,10 @@ onMounted(() => {
 
   graph.value.bindKey('ctrl+v', pastNode)
 
-  graph.value.bindKey('ctrl+z', ()=>{
+  graph.value.bindKey('ctrl+z', () => {
     graph.value.undo()
   })
-  graph.value.bindKey('ctrl+shift+z', ()=>{
+  graph.value.bindKey('ctrl+shift+z', () => {
     graph.value.redo()
   })
 
@@ -378,7 +378,7 @@ const startDrag = (event: any) => {
 
   const seatKey = 'A1'
   const name = 'test'
-  let node;
+  let node
   if (type === 'seat') {
     node = graph.value.createNode({
       // x,
@@ -422,13 +422,12 @@ const startDrag = (event: any) => {
   dnd.start(node, event as any)
 }
 
-
-const handleArrangeSeat = ()=>{
-  if(!studentStore.canArrange){
+const handleArrangeSeat = () => {
+  if (!studentStore.canArrange) {
     ElMessage({
-    message: '请先在“操作”中上传名单excel',
-    type: 'warning',
-  })
+      message: '请先在“操作”中上传名单excel',
+      type: 'warning'
+    })
     return
   }
   arrangeSeat(graph.value)
@@ -439,11 +438,15 @@ const handleArrangeSeat = ()=>{
   <el-container class="layout-container-demo">
     <el-aside width="200px">
       <el-scrollbar>
-        <el-button class="arrange_seat_btn_area" @click="handleArrangeSeat" type="primary" :icon="MagicStick"
+        <el-button
+          class="arrange_seat_btn_area"
+          @click="handleArrangeSeat"
+          type="primary"
+          :icon="MagicStick"
           >编排座位</el-button
         >
 
-        <el-menu :default-openeds="['1','3']">
+        <el-menu :default-openeds="['1', '3']">
           <el-sub-menu index="1">
             <template #title>
               <el-icon><Files /></el-icon>组件库
@@ -464,18 +467,7 @@ const handleArrangeSeat = ()=>{
             <template #title>
               <el-icon><CopyDocument /></el-icon>模板
             </template>
-            <el-menu-item-group>
-              <template #title>Group 1</template>
-              <el-menu-item index="2-1">Option 1</el-menu-item>
-              <el-menu-item index="2-2">Option 2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="Group 2">
-              <el-menu-item index="2-3">Option 3</el-menu-item>
-            </el-menu-item-group>
-            <el-sub-menu index="2-4">
-              <template #title>Option 4</template>
-              <el-menu-item index="2-4-1">Option 4-1</el-menu-item>
-            </el-sub-menu>
+            暂无内容
           </el-sub-menu>
           <el-sub-menu index="3">
             <template #title>
@@ -493,13 +485,38 @@ const handleArrangeSeat = ()=>{
           <el-dropdown>
             <span class="el-dropdown-link">
               <el-icon class="el-icon--left" style="margin-right: 8px; margin-top: 1px"
+                ><Service
+              /></el-icon>
+              <span>帮助</span>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  ><el-text>
+                    <el-icon><Download /></el-icon>
+                    下载模板
+                  </el-text></el-dropdown-item
+                >
+                <el-dropdown-item @click="download"><el-text>
+                  <el-icon><Tickets /></el-icon>
+                    使用说明
+                  </el-text></el-dropdown-item>
+                <el-dropdown-item @click="handleAddBlankSeat"> 添加座位 </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+        <div class="toolbar">
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              <el-icon class="el-icon--left" style="margin-right: 8px; margin-top: 1px"
                 ><Operation
               /></el-icon>
               <span>菜单</span>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item>View</el-dropdown-item>
+                <el-dropdown-item>画布居中</el-dropdown-item>
                 <el-dropdown-item @click="download"> 下载 </el-dropdown-item>
                 <el-dropdown-item @click="handleAddBlankSeat"> 添加座位 </el-dropdown-item>
               </el-dropdown-menu>
@@ -561,7 +578,7 @@ const handleArrangeSeat = ()=>{
 }
 .dnd_wrap {
   box-sizing: border-box;
-  min-height: 30vh;
+  min-height: 25vh;
   width: 100%;
   display: flex;
   flex-direction: column;

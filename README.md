@@ -12,6 +12,8 @@
 npm install
 ```
 
+如果无法安装electron框架，参考[掘金这篇文章](https://juejin.cn/post/7231074060789104695)，或者[官网安装指导](https://www.electronjs.org/zh/docs/latest/tutorial/installation)
+
 ### Compile and Hot-Reload for Development
 
 ```sh
