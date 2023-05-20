@@ -371,7 +371,7 @@ const download = () => {
 
 // 实现 ctrl cv复制粘贴
 const handleAddBlankSeat = () => {
-  addSeat(0, 0, 'A1', '向书晗')
+  addSeat(0, 0, 'A1', '未安排')
 }
 const handleFitGraph = () => {
   graph.value.zoomToFit({ maxScale: 1 })
@@ -381,7 +381,7 @@ const startDrag = (event: any) => {
   const type = target.attributes['data-type'].value
 
   const seatKey = 'A1'
-  const name = 'test'
+  const name = '未安排'
   let node
   if (type === 'seat') {
     node = graph.value.createNode({
@@ -665,5 +665,10 @@ const handleArrangeSeat = () => {
 }
 :global(.toolbar .el-dropdown-menu__item .el-text:hover) {
   color: var(--el-dropdown-menuItem-hover-color);
+}
+:global(.el-dialog){
+  max-height: 80vh;
+  overflow:scroll;
+  scrollbar-width: none;
 }
 </style>
