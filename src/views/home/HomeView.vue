@@ -425,6 +425,52 @@ const startDrag = (event: any) => {
 
   dnd.start(node, event as any)
 }
+// 导出画布模板
+const handleSaveModel = () => {
+  const save = JSON.stringify(graph.value.toJSON())
+  console.log(save)
+
+  const blob = new Blob([save], {
+    type: 'application/json'
+  })
+  const objectURL = URL.createObjectURL(blob)
+  const domElement = document.createElement('a')
+
+  domElement.href = objectURL
+
+  domElement.download = '座位模板.json'
+
+  domElement.click()
+
+  URL.revokeObjectURL(objectURL)
+}
+// 导入模板
+const handleImportModel = () => {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.name = 'filename'
+  input.addEventListener('change', (event) => {
+    console.log('change', event)
+    const file = event.target.files[0]
+    let reader = new FileReader()
+    reader.onload = (e) => {
+      console.log('load',e);
+
+      let content = reader.result
+      // alert(content)
+      content = JSON.parse(content)
+      graph.value.fromJSON(content)
+    }
+    reader.readAsText(file,"UTF-8")
+  })
+
+  input.onclick = function read(event: MouseEvent) {
+    let file = event.target.files[0]
+    console.log('点击', event)
+  }
+  input.click()
+}
+
 const guideDialogVisible = ref(false)
 const handleShowGuide = () => {
   // 展示说明
@@ -527,28 +573,36 @@ const handleArrangeSeat = () => {
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="download"
+                <el-dropdown-item @click="handleSaveModel"
                   ><el-text>
                     <el-icon><Download /></el-icon>
                     保存座位
                   </el-text></el-dropdown-item
                 >
-                <el-dropdown-item @click="download"><el-text>
-                  <el-icon><Upload /></el-icon>
+                <el-dropdown-item @click="handleImportModel"
+                  ><el-text>
+                    <el-icon><Upload /></el-icon>
                     导入座位
-                  </el-text></el-dropdown-item>
-                <el-dropdown-item @click="download"><el-text>
-                  <el-icon><Picture /></el-icon>
+                  </el-text></el-dropdown-item
+                >
+                <el-dropdown-item @click="download"
+                  ><el-text>
+                    <el-icon><Picture /></el-icon>
                     保存图片
-                  </el-text></el-dropdown-item>
-                <el-dropdown-item @click="handleAddBlankSeat"><el-text>
-                  <el-icon><Plus /></el-icon>
+                  </el-text></el-dropdown-item
+                >
+                <el-dropdown-item @click="handleAddBlankSeat"
+                  ><el-text>
+                    <el-icon><Plus /></el-icon>
                     添加座位
-                  </el-text></el-dropdown-item>
-                <el-dropdown-item @click="handleFitGraph"><el-text>
-                  <el-icon><Location /></el-icon>
+                  </el-text></el-dropdown-item
+                >
+                <el-dropdown-item @click="handleFitGraph"
+                  ><el-text>
+                    <el-icon><Location /></el-icon>
                     画布居中
-                  </el-text></el-dropdown-item>
+                  </el-text></el-dropdown-item
+                >
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -666,9 +720,9 @@ const handleArrangeSeat = () => {
 :global(.toolbar .el-dropdown-menu__item .el-text:hover) {
   color: var(--el-dropdown-menuItem-hover-color);
 }
-:global(.el-dialog){
+:global(.el-dialog) {
   max-height: 80vh;
-  overflow:scroll;
+  overflow: scroll;
   scrollbar-width: none;
 }
 </style>
