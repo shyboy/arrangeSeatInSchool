@@ -2,6 +2,10 @@
 
 本项目旨在创建一个好用、易用的中国中小学校排座位软件，主要使用[antv/X6](https://github.com/antvis/X6)图编辑引擎
 
+## 项目预览
+
+[排座位](http://139.155.45.95:5173/)
+
 ## 推荐的 IDE 配置
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
