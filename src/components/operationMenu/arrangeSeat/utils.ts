@@ -24,7 +24,7 @@ export const arrangeSeat = (graph:Graph) => {
         console.log("allNodes",allNodes);
         
     let seats = filterSeats(allNodes)
-
+    seats = filterEnableSeats(seats) as Array<Node>
     seats.forEach((seat)=>{
         seat.attr("name",{ text: '未安排'})
     })
@@ -119,3 +119,11 @@ export const exportList = () => {
     XLSX.writeFile(wb, '导入姓名模板.xlsx') // 保存的文件名
   }
   
+// 过滤不排座的座位
+const filterEnableSeats = (seats: Array<Cell>) => {
+    return seats.filter(node => {
+        if(!node.getData()['disabled']){
+            return node as Node
+        }
+    })
+}

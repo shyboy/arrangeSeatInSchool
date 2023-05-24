@@ -38,7 +38,7 @@ export const setSeatsDisable = (cells: Array<Cell>)=>{
     const seats = filterSeats(cells)
     seats.forEach(seat => {
         seat.attr("body",{ stroke: "#909399"})
-        seat.attr("name",{ fill: "#909399"})
+        seat.attr("name",{ fill: "#909399", text:'-'})
         seat.attr("seatKey",{ fill: "#909399"})
         seat.setData({disabled: true})
     })
@@ -48,7 +48,7 @@ export const setSeatsEnable = (cells: Array<Cell>)=>{
     const seats = filterSeats(cells)
     seats.forEach(seat => {
         seat.attr("body",{ stroke: "#5F95FF"})
-        seat.attr("name",{ fill: "#5F95FF"})
+        seat.attr("name",{ fill: "#5F95FF", text:'未安排'})
         seat.attr("seatKey",{ fill: "#5F95FF"})
         seat.setData({disabled: false})
     })
