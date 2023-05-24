@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Cell, CellView, Graph } from '@antv/x6'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, provide } from 'vue'
 import { Snapline } from '@antv/x6-plugin-snapline'
 import { Export } from '@antv/x6-plugin-export'
 import { Selection } from '@antv/x6-plugin-selection'
@@ -17,10 +17,13 @@ import { arrangeSeat, exportList } from '@/components/operationMenu/arrangeSeat/
 import { ElMessage } from 'element-plus'
 // import VueMarkdownEditor from '@kangc/v-md-editor';
 import markdownTxt from '@/assets/guide.md?raw'
+import ReArrangeSeatDialog from '@/components/reArrangeSeat/index.vue'
+import { useOthersStore } from '@/stores/others'
 
 let dnd
 const dndContainerRef = ref()
 const RightClickMenuComponent = ref()
+const ReArrangeSeatDialogComponent = ref()
 const studentStore = useStudentStore()
 const data = {
   // // 节点
@@ -229,6 +232,7 @@ const pastNode = () => {
   }
   return false
 }
+const otherStore = useOthersStore()
 onMounted(() => {
   graph.value = new Graph({
     container: graphContainer.value,
@@ -339,6 +343,7 @@ onMounted(() => {
     dndContainer: dndContainerRef.value
   })
   RightClickMenuComponent.value = RightClickMenu
+  ReArrangeSeatDialogComponent.value = ReArrangeSeatDialog
 })
 const zoomOut = () => {
   graph.value.zoom(-0.1)
@@ -479,6 +484,8 @@ const handleShowGuide = () => {
 const handleDownloadModelExcel = () => {
   exportList()
 }
+
+
 const handleArrangeSeat = () => {
   if (!studentStore.canArrange) {
     ElMessage({
@@ -615,6 +622,7 @@ const handleArrangeSeat = () => {
     </el-container>
   </el-container>
   <component :is="RightClickMenuComponent" v-if="RightClickMenuComponent" :graph="graph" />
+  <component :is="ReArrangeSeatDialogComponent" v-if="otherStore.showReArrangeDialog" :graph="graph" />
   <!-- <RightClickMenu :graph="graph.value"/> -->
   <el-dialog v-model="guideDialogVisible" title="用户指南">
     <v-md-preview :text="markdownTxt"></v-md-preview>

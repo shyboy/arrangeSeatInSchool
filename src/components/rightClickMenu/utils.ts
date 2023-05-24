@@ -16,3 +16,20 @@ export const switch2Seats = (seats: Array<Cell>)=> {
 
     return true
 }
+/**
+ * 重新安排座位
+ * @param cells 选中的元素
+ * @param newIdDic 原来座位号和新座位号的对应map
+ */
+export const reArrangeSeatsIds = (cells: Array<Cell>,newIdDic: Map<string, string>) => {
+    const seats = filterSeats(cells)
+    newIdDic.forEach((value, key)=>{
+        for (let index = 0; index < seats.length; index++) {
+            const seat = seats[index];
+            if(seat.getProp<string>("attrs")["seatKey"]["text"] === key){
+                seat.attr("seatKey",{ text: value})
+                break
+            }
+        }
+    })
+} 

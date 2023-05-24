@@ -4,15 +4,18 @@
     <template #label="{ item: { item } }">插槽：{{ item.label }}</template>
   </vue3-menus> -->
   <div class="div"></div>
+  
   <!-- <div class="div" @click.stop @contextmenu="rightClick">事件方式打开菜单</div> -->
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick, shallowRef } from 'vue'
+import { ref, onMounted, nextTick, shallowRef, type Ref } from 'vue'
+import { inject } from '@vue/runtime-core'
 import { Graph, Cell } from '@antv/x6'
 import { horizontalAlign, verticalAlign } from '@/utils/align'
 import { Vue3Menus, menusEvent } from 'vue3-menus'
 import { horizontalDistribute, verticalDistribute } from '@/utils/distribute'
+
 import {
   copyNodes,
   deleteNodes,
@@ -24,6 +27,7 @@ import {
 } from '@/utils/nodeOperation'
 import { switch2Seats } from './utils'
 import { ElMessage } from 'element-plus'
+import { useOthersStore } from '@/stores/others'
 
 // const contextMenuOpen = ref(false)
 const selectedElements = ref<Array<Cell>>([])
@@ -81,6 +85,15 @@ const showMenu = ({ cell, e }): void => {
 }
 const hideMenu = () => {
   // contextMenuOpen.value = false
+}
+
+const handleReArrangeSeats = () => {
+  // 打开重新安排弹窗
+  const otherStore = useOthersStore()
+  
+  otherStore.showReArrangeDialog = true
+  console.log(otherStore.showReArrangeDialog);
+  
 }
 
 const menus = shallowRef([
@@ -199,6 +212,13 @@ const menus = shallowRef([
           }
         },
         icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40 33L44 37L40 41" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M40 7L44 11L40 15" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M44 11H37C29.8203 11 24 16.8203 24 24C24 31.1797 29.8203 37 37 37H44" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M4 37H11C18.1797 37 24 31.1797 24 24C24 16.8203 18.1797 11 11 11H4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>'
+      },
+      {
+        label: '重排座位号',
+        click: () => {
+          handleReArrangeSeats()
+        },
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="38" height="38" rx="2" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M5 18H43" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M5 30H43" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M17 5V43" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M30 5V43" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>'
       },
       {
         label: '不排座',
