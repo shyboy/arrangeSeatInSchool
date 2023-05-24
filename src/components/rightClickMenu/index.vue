@@ -10,7 +10,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, nextTick, shallowRef, type Ref } from 'vue'
-import { inject } from '@vue/runtime-core'
 import { Graph, Cell } from '@antv/x6'
 import { horizontalAlign, verticalAlign } from '@/utils/align'
 import { Vue3Menus, menusEvent } from 'vue3-menus'
@@ -25,7 +24,7 @@ import {
   moveDownNodes,
   moveUpNodes
 } from '@/utils/nodeOperation'
-import { switch2Seats } from './utils'
+import { switch2Seats,setSeatsDisable,setSeatsEnable } from './utils'
 import { ElMessage } from 'element-plus'
 import { useOthersStore } from '@/stores/others'
 
@@ -223,9 +222,15 @@ const menus = shallowRef([
       {
         label: '不排座',
         click: () => {
-          switch2Seats(selectedElements.value)
+          setSeatsDisable(selectedElements.value)
         },
         icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/><path d="M15 15L33 33" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
+      },{
+        label: '排座',
+        click: () => {
+          setSeatsEnable(selectedElements.value)
+        },
+        icon: '<?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C29.5228 44 34.5228 41.7614 38.1421 38.1421C41.7614 34.5228 44 29.5228 44 24C44 18.4772 41.7614 13.4772 38.1421 9.85786C34.5228 6.23858 29.5228 4 24 4C18.4772 4 13.4772 6.23858 9.85786 9.85786C6.23858 13.4772 4 18.4772 4 24C4 29.5228 6.23858 34.5228 9.85786 38.1421C13.4772 41.7614 18.4772 44 24 44Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/><path d="M16 24L22 30L34 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="miter"/></svg>'
       }
     ]
   },

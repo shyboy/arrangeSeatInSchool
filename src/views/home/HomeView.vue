@@ -161,6 +161,10 @@ Graph.registerNode(
         textAnchor: 'middle'
       }
     },
+    data: {
+      // 业务数据
+      disabled: false
+    },
     tools: [
       {
         name: 'node-editor',
